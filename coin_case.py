@@ -32,9 +32,16 @@ class CoinCase:
     print(self.name)
     if len(self.dict) == 0:
       print("    No coins")
-    for coin_type, count in self.dict.items():
+    sum = 0
+    sum_for_price = {}
+    sorted_items = list(sorted(self.dict.items(), key=(lambda item: item[0].year), reverse=True))
+    sorted_items = list(sorted(sorted_items, key=(lambda item: item[0].price), reverse=True))
+    for coin_type, count in sorted_items:
+      sum += count
+      sum_for_price[coin_type.price] = (sum_for_price.get(coin_type.price) or 0) + count
       print(f'{coin_type.str_short():>12}: {count:>2}')
-      
+    print ("sum: ", sum)
+    print ("sum for price", sum_for_price)
 
   def is_full_for_price(self, price):
     sum = 0
@@ -52,7 +59,7 @@ class CoinCase:
     if len(types) == 0:
       raise RuntimeError("No candidates for no coins for the price: " + price.str())
 
-    return list(sorted(types, key=(lambda t: issued_number[price][t])))[-1]
+    return list(sorted(types, key=(lambda t: (issued_number[price][t]) or 0 )))[-1]
 
   def difference(self, other):
     union_keys = self.dict.keys() | other.dict.keys()
