@@ -73,8 +73,8 @@ if __name__ == '__main__':
 
   coin_tool.add("1h1", 2)
   coin_tool.add("1h2", 1)
-  coin_tool.add("500r1new", 1)
-  coin_tool.add("500r1new 500r2")
+  coin_tool.add("500r1", 1)
+  coin_tool.add("500r1 500r2")
   coin_tool.remove("1h1")
   coin_tool.ls()
 

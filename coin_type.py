@@ -101,8 +101,8 @@ class CoinType:
   def __init__(self, price, year, isNew=None):
     self.price = price
     self.year = year
-    if price == Price.FiveHandred and year == Year(Gengou.Reiwa, 1) and not isNew:
-      raise RuntimeError("'isNew' is must specified for 500 Yen, Reiwa 1 coin")
+    if price == Price.FiveHandred and year == Year(Gengou.Reiwa, 3) and isNew is None:
+      raise RuntimeError("'isNew' is must specified for 500 Yen, Reiwa 3 coin")
     else:
       self.isNew = isNew
 
@@ -115,17 +115,19 @@ class CoinType:
       return CoinType(price, year)
     elif m.group(3) == "new":
       return CoinType(price, year, True)
-    else:
+    elif m.group(3) == "old":
       return CoinType(price, year, False)
+    else:
+      raise RuntimeError("parse error")
 
   def str(self):
-    if not self.isNew:
+    if self.isNew is None:
       return self.price.str() + ", " + self.year.str()
     else:
       return self.price.str() + ", " + self.year.str() + " " + ("new" if self.isNew else "old")
 
   def str_short(self):
-    if not self.isNew:
+    if self.isNew is None:
       return self.price.str_short() + self.year.str_short()
     else:
       return self.price.str_short() + self.year.str_short() + ("new" if self.isNew else "old")
